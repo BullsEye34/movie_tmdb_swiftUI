@@ -57,5 +57,7 @@ struct MovieCard: View {
             Spacer()
                 .frame(width: 20)
         }
+        .frame(height: 150)
+        .padding([.vertical], 5.0)
     }
 }

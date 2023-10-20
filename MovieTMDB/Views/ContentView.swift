@@ -18,7 +18,9 @@ struct ContentView: View {
                 case .loading: ProgressView()
                 case .error(message: let message): Text("Error: \(message)")
                 case .trendingMovies(let movies):
-                MovieListView(movies: movies)
+                    MovieListView(movies: movies)
+                case .searchedMovies(let movies):
+                    MovieListView(movies: movies)
                 }
             }
             .onAppear{
@@ -27,7 +29,12 @@ struct ContentView: View {
         }
         .searchable(text: $searchText)
         .onChange(of: searchText) { oldValue, newValue in
-            print(newValue)
+            if(newValue.count>3) {
+                viewModel.getSearchedList(searchTerm: newValue)
+            }
+            if(newValue.count==0){
+                viewModel.getTrending()
+            }
         }
     }
     
