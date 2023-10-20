@@ -9,22 +9,25 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject var viewModel = MovieDBViewModel()
+    @State var searchText: String = ""
     var body: some View {
-        VStack{
-            switch(viewModel.movieState){
-            case .idle: Text("Starting")
-            case .loading: ProgressView()
-            case .error(message: let message): Text("Error: \(message)")
-            case .trendingMovies(let movies): ScrollView {
-                ForEach(movies){ trendingMovie in
-                    Text(trendingMovie.title)
+        NavigationStack{
+            VStack{
+                switch(viewModel.trendingMovieState){
+                case .idle: Text("Starting")
+                case .loading: ProgressView()
+                case .error(message: let message): Text("Error: \(message)")
+                case .trendingMovies(let movies):
+                MovieListView(movies: movies)
                 }
             }
+            .onAppear{
+                viewModel.getTrending()
             }
         }
-        .padding()
-        .onAppear{
-            viewModel.getTrending()
+        .searchable(text: $searchText)
+        .onChange(of: searchText) { oldValue, newValue in
+            print(newValue)
         }
     }
     

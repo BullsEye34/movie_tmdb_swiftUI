@@ -15,10 +15,10 @@ class MovieDBViewModel:ObservableObject{
         case error(message:String)
         case trendingMovies([Movie])
     }
-    @Published var movieState = MovieState.idle
+    @Published var trendingMovieState = MovieState.idle
     
     func getTrending(){
-        movieState = MovieState.loading
+        trendingMovieState = MovieState.loading
         Task{
             let url = URL(string: "https://api.themoviedb.org/3/trending/movie/day")
             var urlRequest = URLRequest(url: url!)
@@ -26,9 +26,9 @@ class MovieDBViewModel:ObservableObject{
             do{
                 let (data, _) = try await URLSession.shared.data(for: urlRequest)
                 let parsedResponse = try JSONDecoder().decode(APIResponse.self, from: data)
-                movieState = MovieState.trendingMovies(parsedResponse.results)
+                trendingMovieState = MovieState.trendingMovies(parsedResponse.results)
             }catch{
-                movieState = MovieState.error(message: error.localizedDescription)
+                trendingMovieState = MovieState.error(message: error.localizedDescription)
                 print(error)
             }
 

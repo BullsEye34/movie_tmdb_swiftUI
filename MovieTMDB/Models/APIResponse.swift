@@ -20,4 +20,9 @@ struct Movie: Identifiable, Decodable{
     var poster_path: String
     var vote_average: Float
     var overview: String
+    
+    var posterURL: URL{
+        let baseURL = URL(string: "https://image.tmdb.org/t/p/w300")!
+        return baseURL.appending(path: poster_path)
+    }
 }
