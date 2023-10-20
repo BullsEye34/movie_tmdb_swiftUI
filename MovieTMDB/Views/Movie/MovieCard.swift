@@ -10,54 +10,59 @@ import SwiftUI
 struct MovieCard: View {
     var movie: Movie
     var body: some View {
-        HStack{
-            Spacer()
-                .frame(width: 20)
-            ZStack (alignment: .leading) {
-                HStack{
-                    Spacer()
-                        .frame(width: 120)
-                    
-                    VStack (alignment: .leading){
-                        Text(movie.title)
-                            .font(.title)
+        NavigationLink {
+            MovieDetailsView(movie: movie)
+        } label: {
+            HStack{
+                Spacer()
+                    .frame(width: 20)
+                ZStack (alignment: .leading) {
+                    HStack{
                         Spacer()
-                            .frame(height: 2.0)
-                        Text(movie.overview)
-                            .font(.subheadline)
-                            .lineLimit(3)
+                            .frame(width: 120)
+                        
+                        VStack (alignment: .leading){
+                            Text(movie.title)
+                                .font(.title)
+                            Spacer()
+                                .frame(height: 2.0)
+                            Text(movie.overview)
+                                .font(.subheadline)
+                                .lineLimit(3)
+                            Spacer()
+                                .frame(height: 10.0)
+                            HStack{
+                                Image(systemName: "hand.thumbsup.fill")
+                                    .foregroundColor(.yellow)
+                                Text(String(format: "%.2f", movie.vote_average))
+                                    .font(.callout)
+                                    .foregroundColor(.yellow)
+                            }
+                        }
                         Spacer()
-                            .frame(height: 10.0)
-                        HStack{
-                            Image(systemName: "hand.thumbsup.fill")
-                                .foregroundColor(.yellow)
-                            Text(String(format: "%.2f", movie.vote_average))
-                                .font(.callout)
-                                .foregroundColor(.yellow)
+                    }
+                    ZStack{
+                        Rectangle()
+                            .cornerRadius(10)
+                            .shadow(radius: 16, y: 0)
+                        AsyncImage(url: movie.posterURL){image in
+                            image
+                                .resizable()
+                                .scaledToFit()
+                                .cornerRadius(10)
+                            
+                        } placeholder: {
+                            ProgressView()
                         }
                     }
-                    Spacer()
+                    .frame(width: 100, height: 150)
                 }
-                ZStack{
-                    Rectangle()
-                        .cornerRadius(10)
-                        .shadow(radius: 16, y: 0)
-                    AsyncImage(url: movie.posterURL){image in
-                        image
-                            .resizable()
-                            .scaledToFit()
-                            .cornerRadius(10)
-                        
-                    } placeholder: {
-                        ProgressView()
-                    }
-                }
-                .frame(width: 100, height: 150)
+                Spacer()
+                    .frame(width: 20)
             }
-            Spacer()
-                .frame(width: 20)
+            .frame(height: 150)
+            .padding([.vertical], 5.0)
         }
-        .frame(height: 150)
-        .padding([.vertical], 5.0)
+
     }
 }

@@ -23,13 +23,13 @@ struct ContentView: View {
                     MovieListView(movies: movies)
                 }
             }
-            .onAppear{
-                viewModel.getTrending()
-            }
+        }
+        .onAppear{
+            viewModel.getTrending()
         }
         .searchable(text: $searchText)
         .onChange(of: searchText) { oldValue, newValue in
-            if(newValue.count>3) {
+            if(newValue.count>0) {
                 viewModel.getSearchedList(searchTerm: newValue)
             }
             if(newValue.count==0){
